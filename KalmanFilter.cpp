@@ -149,6 +149,37 @@ std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>>
 	return result_pair;
 }
 
+std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> KalmanFilter::update(Eigen::Vector<float, double_dim> mean, Eigen::Matrix<float, double_dim, double_dim> covariance, Eigen::Vector<float, num_dim> measurement) {
+	printf("kalman filter update step");
+	std::cout << std::endl;
+	std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>> projected_pair = this->project(mean, covariance);
+
+	Eigen::Vector<float, num_dim> projected_mean = projected_pair.first;
+	Eigen::Matrix<float, num_dim, num_dim> projected_cov = projected_pair.second;
+
+	// LDLT decomposition works here but need more testing, maybe use LLT instead
+	Eigen::LDLT<Eigen::Matrix<float, num_dim, num_dim>> chol_factor = projected_cov.ldlt();
+
+	Eigen::Matrix<float, double_dim, num_dim> kalman_gain = chol_factor.solve((covariance * update_mat.transpose()).transpose()).transpose();
+
+	Eigen::Vector<float, num_dim> innovation = measurement.array() - projected_mean.array();
+
+	Eigen::Vector<float, double_dim> intermediate_result = innovation.transpose() * kalman_gain.transpose();
+	Eigen::Vector<float, double_dim> new_mean = mean.array() + (intermediate_result).array();
+
+	printf("updated new mean:");
+	std::cout << std::endl << new_mean << std::endl;
+
+	Eigen::Matrix<float, double_dim, double_dim> new_cov = covariance - kalman_gain * projected_cov * kalman_gain.transpose();
+
+	printf("updated new covariance:");
+	std::cout << std::endl << new_cov << std::endl;
+
+	std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> result_pair = std::make_pair(new_mean, new_cov);
+
+	return result_pair;
+}
+
 KalmanFilter::~KalmanFilter() {
 	printf("deleting kalman filter object");
 }
