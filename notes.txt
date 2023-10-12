@@ -1,0 +1,37 @@
+motion mat = matrix[8, 8]
+update mat = matrix[4, 8]
+
+initiate:
+	measurement = vector[4]
+	
+	mean = vector[8]
+	covariance = matrix[8, 8]
+	
+predict
+	mean = vector[8]
+	covariance = matrix[8, 8]
+	
+	mean = vector[8]
+	covariance = matrix[8, 8]
+	
+project
+	mean = vector[8]
+	covariance = matrix[8, 8]
+	
+	mean = vector[4]
+	covariance = matrix[4, 4]
+	
+update
+	mean = vector[8]
+	covariance = matrix[8, 8]
+	measurement = vector[4]
+	
+	mean = vector[8]
+	covariance = matrix[8, 8]
+
+gating distance
+	mean = vector[8]
+	covariance = matrix[8, 8]
+	measurements = matrix[N, 4]
+	
+	squared_maha = vector[N]  
