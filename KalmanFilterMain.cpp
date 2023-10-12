@@ -13,10 +13,6 @@ int main()
     measurements << Eigen::Vector<float, num_dim>(2, 4, 6, 8), Eigen::Vector<float, num_dim>(3, 5, 7, 9);
 
     filter.initiate(Eigen::Vector<float, num_dim>(2, 4, 6, 8));
-    filter.predict(Eigen::Vector<float, double_dim>(1, 2, 3, 4, 5, 6, 7, 8), cov);
-    filter.project(Eigen::Vector<float, double_dim>(1, 2, 3, 4, 5, 6, 7, 8), cov);
-    filter.update(Eigen::Vector<float, double_dim>(1, 2, 3, 4, 5, 6, 7, 8), cov, Eigen::Vector<float, num_dim>(2, 4, 6, 8));
-    filter.gating_distance(Eigen::Vector<float, double_dim>(1, 2, 3, 4, 5, 6, 7, 8), cov, measurements, true);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
