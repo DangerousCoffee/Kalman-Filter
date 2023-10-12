@@ -36,5 +36,11 @@ private:
 		{7, 14.067},
 		{8, 15.507},
 		{9, 16.919}
-	};S
+	};
+
+	virtual Eigen::VectorXf gating_solve(Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>, Eigen::VectorX<Eigen::Vector<float, num_dim>>);
+	virtual Eigen::VectorXf gating_solve(Eigen::Vector2f, Eigen::Matrix2f, Eigen::VectorX<Eigen::Vector2f>);
+
+	virtual Eigen::MatrixX<float> nested_vector_to_matrix(Eigen::VectorX<Eigen::Vector<float, num_dim>>);
+	virtual Eigen::MatrixX<float> nested_vector_to_matrix(Eigen::VectorX<Eigen::Vector2f>);
 };
