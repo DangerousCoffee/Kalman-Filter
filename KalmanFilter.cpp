@@ -16,7 +16,6 @@ const std::map<int, float> chi2magicnumber =
 		};
 
 
-
 KalmanFilter::KalmanFilter() {
 	printf("creating kalman filter object");
 	std::cout << std::endl;
@@ -178,6 +177,101 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 	std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> result_pair = std::make_pair(new_mean, new_cov);
 
 	return result_pair;
+}
+
+Eigen::VectorXf KalmanFilter::gating_distance(Eigen::Vector<float, double_dim> mean, Eigen::Matrix<float, double_dim, double_dim> covariance, Eigen::VectorX<Eigen::Vector<float, 4>> measurements, bool only_position) {
+	printf("Calculating gating distance");
+	std::cout << std::endl;
+	std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>> projected_pair = this->project(mean, covariance);
+
+	Eigen::Vector<float, num_dim> projected_mean = projected_pair.first;
+	Eigen::Matrix<float, num_dim, num_dim> projected_covariance = projected_pair.second;
+
+
+	if (only_position) {
+		Eigen::Vector2f only_pos_mean = projected_mean.head(2);
+		Eigen::Matrix2f only_pos_cov = projected_covariance(Eigen::seq(0, 1), Eigen::seq(0, 1));
+		Eigen::VectorX<Eigen::Vector2f> only_pos_measurements(measurements.size());
+		for (int i = 0; i < measurements.size(); i++) {
+			only_pos_measurements[i] = measurements(i)(Eigen::seq(0, 1));
+		}
+		return this->gating_solve(only_pos_mean, only_pos_cov, only_pos_measurements);
+	}
+
+
+	return this->gating_solve(projected_mean, projected_covariance, measurements);
+}
+
+Eigen::VectorXf KalmanFilter::gating_solve(Eigen::Vector<float, num_dim> mean, Eigen::Matrix<float, num_dim, num_dim> covariance, Eigen::VectorX<Eigen::Vector<float, num_dim>> measurements) {
+	Eigen::LLT<Eigen::Matrix<float, num_dim, num_dim>> chol_factor = covariance.llt();
+
+	Eigen::VectorX<Eigen::Vector<float, num_dim>> d(measurements.size());
+	for (int i = 0; i < measurements.size(); i++) {
+		d[i] = measurements[i] - mean;
+	}
+
+	Eigen::MatrixX<float> d_matrix = this->nested_vector_to_matrix(d);
+
+	Eigen::MatrixXf z = chol_factor.matrixL().solve(d_matrix.transpose());
+
+	z.transposeInPlace();
+	Eigen::MatrixXf squared_z(z.rows(), z.cols());
+	for (int i = 0; i < z.size(); i++) {
+		squared_z(i) = z(i) * z(i);
+	}
+
+	Eigen::VectorXf squared_maha = squared_z.rowwise().sum();
+
+	printf("squared maha: ");
+	std::cout << std::endl << squared_maha << std::endl;
+
+	return squared_maha;
+}
+
+Eigen::VectorXf KalmanFilter::gating_solve(Eigen::Vector2f mean, Eigen::Matrix2f covariance, Eigen::VectorX<Eigen::Vector2f> measurements) {
+	Eigen::LLT<Eigen::Matrix2f> chol_factor = covariance.llt();
+
+	Eigen::VectorX<Eigen::Vector2f> d(measurements.size());
+	for (int i = 0; i < measurements.size(); i++) {
+		d[i] = measurements[i] - mean;
+	}
+
+	Eigen::MatrixX<float> d_matrix = this->nested_vector_to_matrix(d);
+
+	Eigen::MatrixXf z = chol_factor.matrixL().solve(d_matrix.transpose());
+
+	z.transposeInPlace();
+	Eigen::MatrixXf squared_z(z.rows(), z.cols());
+	for (int i = 0; i < z.size(); i++) {
+		squared_z(i) = z(i) * z(i);
+	}
+
+	Eigen::VectorXf squared_maha = squared_z.rowwise().sum();
+
+	printf("squared maha: ");
+	std::cout << std::endl << squared_maha << std::endl;
+
+	return squared_maha;
+}
+
+Eigen::MatrixX<float> KalmanFilter::nested_vector_to_matrix(Eigen::VectorX<Eigen::Vector<float, num_dim>> vector) {
+	Eigen::MatrixX<float> matrix(vector.size(), vector[0].size());
+
+	for (int i = 0; i < vector.size(); i++) {
+		matrix.row(i) = vector[i];
+	}
+
+	return matrix;
+}
+
+Eigen::MatrixX<float> KalmanFilter::nested_vector_to_matrix(Eigen::VectorX<Eigen::Vector2f> vector) {
+	Eigen::MatrixX<float> matrix(vector.size(), vector[0].size());
+
+	for (int i = 0; i < vector.size(); i++) {
+		matrix.row(i) = vector[i];
+	}
+
+	return matrix;
 }
 
 KalmanFilter::~KalmanFilter() {
