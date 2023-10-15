@@ -1,0 +1,9 @@
+﻿  KalmanFilterMain.cpp
+C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(26,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
+C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(27,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
+  Generating code
+  86 of 9084 functions ( 0.9%) were compiled, the rest were copied from previous compilation.
+    71 functions were new in current compilation
+    390 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  KalmanFilter.vcxproj -> C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\x64\Release\KalmanFilter.exe

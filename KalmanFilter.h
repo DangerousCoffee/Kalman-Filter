@@ -3,8 +3,6 @@
 #include "iostream"
 #include "map"
 
-using Eigen::Matrix;
-
 #define num_dim 4
 #define double_dim num_dim*2
 #define dt 1.0

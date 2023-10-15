@@ -1,14 +1,4 @@
-﻿  KalmanFilter.cpp
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(26,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(27,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.cpp(3,37): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.cpp(4,38): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.cpp(65,2): warning C4305: 'argument': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.cpp(91,2): warning C4305: 'argument': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.cpp(97,2): warning C4305: 'argument': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.cpp(132,2): warning C4305: 'argument': truncation from 'double' to 'const float'
-  KalmanFilterMain.cpp
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(26,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(27,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
-  Generating Code...
+﻿  KalmanFilterMain.cpp
+C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(24,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
+C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(25,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
   KalmanFilter.vcxproj -> C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\x64\Debug\KalmanFilter.exe

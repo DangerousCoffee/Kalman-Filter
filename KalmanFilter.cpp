@@ -18,8 +18,8 @@ const std::map<int, float> chi2magicnumber =
 
 
 KalmanFilter::KalmanFilter() {
-	printf("creating kalman filter object");
-	std::cout << std::endl;
+	/*printf("creating kalman filter object");
+	std::cout << std::endl;*/
 
 	this->motion_mat = Eigen::Matrix<float, double_dim, double_dim>::Zero();
 	this->motion_mat.diagonal().array() += 1.0;
@@ -31,24 +31,23 @@ KalmanFilter::KalmanFilter() {
 	this->update_mat = Eigen::Matrix<float, num_dim, double_dim>::Zero();
 	this->update_mat.diagonal().array() += 1.0;
 
-	printf("motion mat: ");
+	/*printf("motion mat: ");
 	std::cout << std::endl << this->motion_mat << std::endl;
 	printf("update mat: ");
-	std::cout << std::endl << this->update_mat << std::endl;
+	std::cout << std::endl << this->update_mat << std::endl;*/
 };
 
 std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> KalmanFilter::initiate(Eigen::Vector<float, num_dim> measurement) {
-	printf("initializing kalman filter");
-	std::cout << std::endl;
+	/*printf("initializing kalman filter");
+	std::cout << std::endl;*/
 
 	Eigen::Vector<float, num_dim> mean_pos = measurement;
 	Eigen::Vector<float, num_dim> mean_vel = Eigen::Vector<float, num_dim>::Zero();
 	Eigen::Vector<float, double_dim> mean;
 	mean << mean_pos, mean_vel;
 
-	printf("initiate mean value:");
-
-	std::cout << std::endl << mean << std::endl;
+	/*printf("initiate mean value:");
+	std::cout << std::endl << mean << std::endl;*/
 
 	float double_std_pos_measurement = 2 * this->std_weight_pos * measurement(3);
 	float tten_std_vel_measurement = 10 * this->std_weight_vel * measurement(3);
@@ -67,9 +66,8 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 
 	Eigen::Matrix<float, double_dim, double_dim> covariance = std_squared.asDiagonal();
 	
-	printf("initiate covariance:");
-
-	std::cout << std::endl << covariance << std::endl;
+	/*printf("initiate covariance:");
+	std::cout << std::endl << covariance << std::endl;*/
 
 	std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> result_pair = std::make_pair(mean, covariance);
 
@@ -77,8 +75,8 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 }
 
 std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> KalmanFilter::predict(Eigen::Vector<float, double_dim> mean, Eigen::Matrix<float, double_dim, double_dim> covariance) {
-	printf("kalman filter prediction step");
-	std::cout << std::endl;
+	/*printf("kalman filter prediction step");
+	std::cout << std::endl;*/
 
 	float std_weight_pos_by_mean = this->std_weight_pos * mean(3);
 	float std_weight_vel_by_mean = this->std_weight_vel * mean(3);
@@ -104,15 +102,13 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 
 	Eigen::Vector<float, double_dim> predicted_mean = this->motion_mat * mean;
 
-	printf("prediction new mean:");
-
-	std::cout << std::endl << predicted_mean << std::endl;
+	/*printf("prediction new mean:");
+	std::cout << std::endl << predicted_mean << std::endl;*/
 
 	Eigen::Matrix<float, double_dim, double_dim> predicted_covariance = this->motion_mat * covariance * this->motion_mat.transpose() + motion_cov;
 
-	printf("prediction new covariance:");
-
-	std::cout << std::endl << predicted_covariance << std::endl;
+	/*printf("prediction new covariance:");
+	std::cout << std::endl << predicted_covariance << std::endl;*/
 
 	std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> result_pair = std::make_pair(predicted_mean, predicted_covariance);
 
@@ -120,8 +116,8 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 }
 
 std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>> KalmanFilter::project(Eigen::Vector<float, double_dim> mean, Eigen::Matrix<float, double_dim, double_dim> covariance) {
-	printf("kalman filter project step");
-	std::cout << std::endl;
+	/*printf("kalman filter project step");
+	std::cout << std::endl;*/
 	float std_weight_pos_by_mean = std_weight_pos * mean(3);
 
 	Eigen::Vector<float, num_dim> std = {
@@ -136,13 +132,13 @@ std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>>
 
 	Eigen::Vector<float, num_dim> projected_mean = this->update_mat * mean;
 
-	printf("projected mean:");
-	std::cout << std::endl << projected_mean << std::endl;
+	/*printf("projected mean:");
+	std::cout << std::endl << projected_mean << std::endl;*/
 
 	Eigen::Matrix<float, num_dim, num_dim> projected_covariance = this->update_mat * covariance * this->update_mat.transpose() + innovation_cov;
 	
-	printf("projected cov:");
-	std::cout << std::endl << projected_covariance << std::endl;
+	/*printf("projected cov:");
+	std::cout << std::endl << projected_covariance << std::endl;*/
 
 	std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>> result_pair = std::make_pair(projected_mean, projected_covariance);
 
@@ -150,8 +146,8 @@ std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>>
 }
 
 std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> KalmanFilter::update(Eigen::Vector<float, double_dim> mean, Eigen::Matrix<float, double_dim, double_dim> covariance, Eigen::Vector<float, num_dim> measurement) {
-	printf("kalman filter update step");
-	std::cout << std::endl;
+	/*printf("kalman filter update step");
+	std::cout << std::endl;*/
 	std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>> projected_pair = this->project(mean, covariance);
 
 	Eigen::Vector<float, num_dim> projected_mean = projected_pair.first;
@@ -167,13 +163,13 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 	Eigen::Vector<float, double_dim> intermediate_result = innovation.transpose() * kalman_gain.transpose();
 	Eigen::Vector<float, double_dim> new_mean = mean.array() + (intermediate_result).array();
 
-	printf("updated new mean:");
-	std::cout << std::endl << new_mean << std::endl;
+	/*printf("updated new mean:");
+	std::cout << std::endl << new_mean << std::endl;*/
 
 	Eigen::Matrix<float, double_dim, double_dim> new_cov = covariance - kalman_gain * projected_cov * kalman_gain.transpose();
 
-	printf("updated new covariance:");
-	std::cout << std::endl << new_cov << std::endl;
+	/*printf("updated new covariance:");
+	std::cout << std::endl << new_cov << std::endl;*/
 
 	std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> result_pair = std::make_pair(new_mean, new_cov);
 
@@ -181,8 +177,8 @@ std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, dou
 }
 
 Eigen::VectorXf KalmanFilter::gating_distance(Eigen::Vector<float, double_dim> mean, Eigen::Matrix<float, double_dim, double_dim> covariance, Eigen::VectorX<Eigen::Vector<float, 4>> measurements, bool only_position) {
-	printf("Calculating gating distance");
-	std::cout << std::endl;
+	/*printf("Calculating gating distance");
+	std::cout << std::endl;*/
 	std::pair<Eigen::Vector<float, num_dim>, Eigen::Matrix<float, num_dim, num_dim>> projected_pair = this->project(mean, covariance);
 
 	Eigen::Vector<float, num_dim> projected_mean = projected_pair.first;
@@ -223,8 +219,8 @@ Eigen::VectorXf KalmanFilter::gating_solve(Eigen::Vector<float, num_dim> mean, E
 
 	Eigen::VectorXf squared_maha = squared_z.rowwise().sum();
 
-	printf("squared maha: ");
-	std::cout << std::endl << squared_maha << std::endl;
+	/*printf("squared maha: ");
+	std::cout << std::endl << squared_maha << std::endl;*/
 
 	return squared_maha;
 }
@@ -249,8 +245,8 @@ Eigen::VectorXf KalmanFilter::gating_solve(Eigen::Vector2f mean, Eigen::Matrix2f
 
 	Eigen::VectorXf squared_maha = squared_z.rowwise().sum();
 
-	printf("squared maha: ");
-	std::cout << std::endl << squared_maha << std::endl;
+	/*printf("squared maha: ");
+	std::cout << std::endl << squared_maha << std::endl;*/
 
 	return squared_maha;
 }
