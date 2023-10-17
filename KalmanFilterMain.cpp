@@ -35,9 +35,9 @@ int main()
     std::cout << std::endl << vector.format(format) << std::endl;
     
     // get initial values from filter
-    std::pair<Eigen::Vector<float, double_dim>, Eigen::Matrix<float, double_dim, double_dim>> pair = filter.initiate(vector);
+    mean_cov_pair pair = filter.initiate(vector);
 
-    writingToFile << pair.first.format(format) << std::endl;
+    writingToFile << pair.mean.format(format) << std::endl;
 
     Eigen::Vector<float, double_dim> result_mean;
 
@@ -46,12 +46,12 @@ int main()
         vector = Eigen::Vector<float, num_dim>::Zero();
         std::istringstream stream(line);
         std::copy(std::istream_iterator<float>(stream), std::istream_iterator<float>(), vector.begin());
-        pair = filter.predict(pair.first, pair.second);
-        pair = filter.update(pair.first, pair.second, vector);
+        pair = filter.predict(pair.mean, pair.covariance);
+        pair = filter.update(pair.mean, pair.covariance, vector);
 
         
-        writingToFile << pair.first.format(format) << std::endl;
-        std::cout << std::endl << pair.first.format(format) << std::endl;
+        writingToFile << pair.mean.format(format) << std::endl;
+        std::cout << std::endl << pair.mean.format(format) << std::endl;
     }
 
     readingFromFile.close();

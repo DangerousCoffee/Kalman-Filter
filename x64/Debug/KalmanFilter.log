@@ -1,4 +1,1 @@
-﻿  KalmanFilterMain.cpp
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(24,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
-C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\KalmanFilter.h(25,29): warning C4305: 'initializing': truncation from 'double' to 'const float'
-  KalmanFilter.vcxproj -> C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\x64\Debug\KalmanFilter.exe
+﻿  KalmanFilter.vcxproj -> C:\sharaga\work\Kalman Filter\KalmanFilter\Kalman-Filter\x64\Debug\KalmanFilter.exe
